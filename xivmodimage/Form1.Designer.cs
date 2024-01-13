@@ -43,6 +43,8 @@
             this.labelModName = new System.Windows.Forms.Label();
             this.descModAuthor = new System.Windows.Forms.Label();
             this.labelModAuthor = new System.Windows.Forms.Label();
+            this.btnPackMods = new System.Windows.Forms.Button();
+            this.progressBarExportMods = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -74,7 +76,8 @@
             // 
             // btnAccept
             // 
-            this.btnAccept.Location = new System.Drawing.Point(598, 357);
+            this.btnAccept.Enabled = false;
+            this.btnAccept.Location = new System.Drawing.Point(566, 357);
             this.btnAccept.Name = "btnAccept";
             this.btnAccept.Size = new System.Drawing.Size(117, 32);
             this.btnAccept.TabIndex = 3;
@@ -94,7 +97,8 @@
             // 
             // btnScan
             // 
-            this.btnScan.Location = new System.Drawing.Point(449, 357);
+            this.btnScan.Enabled = false;
+            this.btnScan.Location = new System.Drawing.Point(416, 357);
             this.btnScan.Name = "btnScan";
             this.btnScan.Size = new System.Drawing.Size(143, 70);
             this.btnScan.TabIndex = 5;
@@ -104,7 +108,8 @@
             // 
             // btnCustom
             // 
-            this.btnCustom.Location = new System.Drawing.Point(598, 395);
+            this.btnCustom.Enabled = false;
+            this.btnCustom.Location = new System.Drawing.Point(566, 395);
             this.btnCustom.Name = "btnCustom";
             this.btnCustom.Size = new System.Drawing.Size(117, 32);
             this.btnCustom.TabIndex = 6;
@@ -122,6 +127,7 @@
             // 
             // btnPrevImage
             // 
+            this.btnPrevImage.Enabled = false;
             this.btnPrevImage.Location = new System.Drawing.Point(517, 295);
             this.btnPrevImage.Name = "btnPrevImage";
             this.btnPrevImage.Size = new System.Drawing.Size(75, 23);
@@ -132,6 +138,7 @@
             // 
             // btnNextImage
             // 
+            this.btnNextImage.Enabled = false;
             this.btnNextImage.Location = new System.Drawing.Point(598, 295);
             this.btnNextImage.Name = "btnNextImage";
             this.btnNextImage.Size = new System.Drawing.Size(75, 23);
@@ -184,11 +191,32 @@
             this.labelModAuthor.TabIndex = 14;
             this.labelModAuthor.Text = "null";
             // 
+            // btnPackMods
+            // 
+            this.btnPackMods.Enabled = false;
+            this.btnPackMods.Location = new System.Drawing.Point(689, 357);
+            this.btnPackMods.Name = "btnPackMods";
+            this.btnPackMods.Size = new System.Drawing.Size(99, 32);
+            this.btnPackMods.TabIndex = 15;
+            this.btnPackMods.Text = "Pack Mods";
+            this.btnPackMods.UseVisualStyleBackColor = true;
+            this.btnPackMods.Click += new System.EventHandler(this.btnPackMods_Click);
+            // 
+            // progressBarExportMods
+            // 
+            this.progressBarExportMods.Location = new System.Drawing.Point(689, 395);
+            this.progressBarExportMods.Name = "progressBarExportMods";
+            this.progressBarExportMods.Size = new System.Drawing.Size(99, 32);
+            this.progressBarExportMods.TabIndex = 16;
+            this.progressBarExportMods.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.progressBarExportMods);
+            this.Controls.Add(this.btnPackMods);
             this.Controls.Add(this.labelModAuthor);
             this.Controls.Add(this.descModAuthor);
             this.Controls.Add(this.labelModName);
@@ -231,5 +259,7 @@
         private Label labelModName;
         private Label descModAuthor;
         private Label labelModAuthor;
+        private Button btnPackMods;
+        private ProgressBar progressBarExportMods;
     }
 }
