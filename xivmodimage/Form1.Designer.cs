@@ -80,6 +80,7 @@
             this.btnAccept.TabIndex = 3;
             this.btnAccept.Text = "Accept";
             this.btnAccept.UseVisualStyleBackColor = true;
+            this.btnAccept.Click += new System.EventHandler(this.btnAccept_Click);
             // 
             // btnBrowse
             // 
@@ -89,7 +90,7 @@
             this.btnBrowse.TabIndex = 4;
             this.btnBrowse.Text = "Browse";
             this.btnBrowse.UseVisualStyleBackColor = true;
-            this.btnBrowse.Click += new System.EventHandler(this.button2_Click);
+            this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
             // 
             // btnScan
             // 
@@ -99,6 +100,7 @@
             this.btnScan.TabIndex = 5;
             this.btnScan.Text = "Scan";
             this.btnScan.UseVisualStyleBackColor = true;
+            this.btnScan.Click += new System.EventHandler(this.btnScan_Click);
             // 
             // btnCustom
             // 
@@ -108,6 +110,7 @@
             this.btnCustom.TabIndex = 6;
             this.btnCustom.Text = "Custom Image";
             this.btnCustom.UseVisualStyleBackColor = true;
+            this.btnCustom.Click += new System.EventHandler(this.btnCustom_Click);
             // 
             // pictureBox1
             // 
@@ -125,6 +128,7 @@
             this.btnPrevImage.TabIndex = 8;
             this.btnPrevImage.Text = "Prev";
             this.btnPrevImage.UseVisualStyleBackColor = true;
+            this.btnPrevImage.Click += new System.EventHandler(this.btnPrevImage_Click);
             // 
             // btnNextImage
             // 
@@ -134,6 +138,7 @@
             this.btnNextImage.TabIndex = 9;
             this.btnNextImage.Text = "Next";
             this.btnNextImage.UseVisualStyleBackColor = true;
+            this.btnNextImage.Click += new System.EventHandler(this.btnNextImage_Click);
             // 
             // logBox
             // 
@@ -199,6 +204,8 @@
             this.Controls.Add(this.textModDir);
             this.Controls.Add(this.descAuthor);
             this.Controls.Add(this.descTitle);
+            this.MaximumSize = new System.Drawing.Size(816, 489);
+            this.MinimumSize = new System.Drawing.Size(816, 489);
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

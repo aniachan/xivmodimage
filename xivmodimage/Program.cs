@@ -14,4 +14,13 @@ namespace xivmodimage
             Application.Run(new Form1());
         }
     }
+
+    // Define a class to represent your mod information
+    public class ModInfo
+    {
+        public string ModPath { get; set; }
+        public string Name { get; set; }
+        public string? Author { get; set; }
+        public string? Description { get; set; }
+    }
 }
