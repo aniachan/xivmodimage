@@ -23,4 +23,11 @@ namespace xivmodimage
         public string? Author { get; set; }
         public string? Description { get; set; }
     }
+
+    // Define a class to hold image details
+    public class ImageInfo
+    {
+        public string ImageUrl { get; set; }
+        public string PageTitle { get; set; }
+    }
 }

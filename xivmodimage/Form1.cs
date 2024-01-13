@@ -7,6 +7,7 @@ using GScraper.Google;
 using System.Net;
 using System.IO.Compression;
 using System.ComponentModel;
+using System.Linq;
 
 namespace xivmodimage
 {
@@ -16,7 +17,7 @@ namespace xivmodimage
         private string penumbraDirectory;
         private List<ModInfo> modInfoList = new List<ModInfo>();
         private int currentModIndex = 0;
-        private List<string> imageUrls;
+        private List<ImageInfo> images = new List<ImageInfo>();
         private int currentImageIndex;
         private BackgroundWorker exportWorker;
 
@@ -34,6 +35,11 @@ namespace xivmodimage
             exportWorker.ProgressChanged += ExportModsProgressChanged;
             exportWorker.RunWorkerCompleted += ExportModsCompleted;
             InitializeComponent();
+
+            labelModAuthor.Text = "";
+            labelModName.Text = "";
+            labelPageTitle.Text = "";
+            labelImageProgress.Text = "";
         }
 
         private void btnBrowse_Click(object sender, EventArgs e)
@@ -67,6 +73,7 @@ namespace xivmodimage
 
             if (modInfoList.Count > 0)
             {
+                LogMessage("Scanning for mods...");
                 // Display information for the first mod
                 DisplayCurrentModInfo();
 
@@ -118,7 +125,7 @@ namespace xivmodimage
                     modInfoList.Add(modInfo);
 
                     // Log information (optional)
-                    LogMessage($"Processed {modInfo.Name} in {modDirectory}");
+                    LogMessage($"Processed {modInfo.Name} in {Path.GetFileName(modDirectory)}");
                 }
                 catch (Exception ex)
                 {
@@ -142,7 +149,7 @@ namespace xivmodimage
                 var filteredExactNameResults = exactNameResults
                     .Where(image => image.Width >= 100 && image.Height >= 100)
                     .Take(5)
-                    .Select(image => image.Url)
+                    .Select(image => new ImageInfo { ImageUrl = image.Url, PageTitle = image.Title ?? "" })
                     .ToList();
 
                 // Step 2: Search for the name of the mod along with the author and "ffxiv mod"
@@ -153,13 +160,14 @@ namespace xivmodimage
                 var filteredAuthorAndModResults = authorAndModResults
                     .Where(image => image.Width >= 100 && image.Height >= 100)
                     .Take(10)
-                    .Select(image => image.Url)
+                    .Select(image => new ImageInfo { ImageUrl = image.Url, PageTitle = image.Title ?? "" })
                     .ToList();
 
                 // Combine the results from both searches
-                imageUrls = filteredExactNameResults.Concat(filteredAuthorAndModResults).ToList();
+                images = filteredExactNameResults.Concat(filteredAuthorAndModResults).ToList();
 
-                if (imageUrls.Count > 0)
+
+                if (images.Count > 0)
                 {
                     currentImageIndex = 0;
                     DisplayCurrentImage();
@@ -173,10 +181,7 @@ namespace xivmodimage
                     labelModAuthor.Text = currentMod.Author;
 
                     // Log initial message
-                    LogMessage($"Found {imageUrls.Count} images for {currentMod.Name}");
-
-                    // Optionally, you can log additional information if needed
-                    LogMessage($"Image 1: {imageUrls[0]}");
+                    LogMessage($"Found {images.Count} images for {currentMod.Name}");
 
                     // Enable the Accept button and the custom button
                     btnAccept.Enabled = true;
@@ -187,7 +192,10 @@ namespace xivmodimage
                     LogMessage($"No images found for {currentMod.Name}");
                     pictureBox1.Image = null;
                     // Enable the custom button
+                    btnAccept.Enabled = false;
                     btnCustom.Enabled = true;
+                    labelPageTitle.Text = "";
+                    labelImageProgress.Text = "";
                 }
             }
             catch (Exception e)
@@ -198,24 +206,56 @@ namespace xivmodimage
         }
 
 
-        private void DisplayCurrentImage()
+        private async void DisplayCurrentImage()
         {
-            if (imageUrls.Count > 0 && currentImageIndex >= 0 && currentImageIndex < imageUrls.Count)
+            if (images.Count > 0 && currentImageIndex >= 0 && currentImageIndex < images.Count)
             {
                 pictureBox1.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
-                pictureBox1.LoadAsync(imageUrls[currentImageIndex]);
+
+                try
+                {
+                    var imageInfo = images[currentImageIndex];
+                    labelPageTitle.Text = imageInfo.PageTitle;
+                    labelImageProgress.Text = $"{currentImageIndex + 1} / {images.Count}";
+
+                    // Load the image asynchronously using Task.Run
+                    pictureBox1.Image = await Task.Run(() => LoadImageAsync(imageInfo.ImageUrl));
+                }
+                catch (Exception ex)
+                {
+                    // Handle the exception, log the error, or display a placeholder image
+                    LogMessage($"Error loading image: {ex.Message}");
+                }
+            }
+        }
+
+        private async Task<Image> LoadImageAsync(string imageUrl)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var response = await httpClient.GetAsync(imageUrl);
+                if (response.IsSuccessStatusCode)
+                {
+                    using (var stream = await response.Content.ReadAsStreamAsync())
+                    {
+                        return Image.FromStream(stream);
+                    }
+                }
+                else
+                {
+                    // Optionally handle the error or return a placeholder image
+                    LogMessage($"Failed to download image. Status code: {response.StatusCode}");
+                    return null;
+                }
             }
         }
 
         private void btnNextImage_Click(object sender, EventArgs e)
         {
-            if (currentImageIndex < imageUrls.Count - 1)
+            if (currentImageIndex < images.Count - 1)
             {
                 currentImageIndex++;
                 DisplayCurrentImage();
-
-                // Log the change
-                LogMessage($"Displayed image {currentImageIndex + 1}: {imageUrls[currentImageIndex]}");
             }
         }
 
@@ -225,17 +265,14 @@ namespace xivmodimage
             {
                 currentImageIndex--;
                 DisplayCurrentImage();
-
-                // Log the change
-                LogMessage($"Displayed image {currentImageIndex + 1}: {imageUrls[currentImageIndex]}");
             }
         }
 
         private async void btnAccept_Click(object sender, EventArgs e)
         {
-            if (imageUrls != null && currentImageIndex >= 0 && currentImageIndex < imageUrls.Count)
+            if (images != null && currentImageIndex >= 0 && currentImageIndex < images.Count)
             {
-                string imageUrl = imageUrls[currentImageIndex];
+                string imageUrl = images[currentImageIndex].ImageUrl;
                 string modImagesDirectory = Path.Combine(modInfoList[currentModIndex].ModPath, "images");
 
                 try
@@ -320,6 +357,9 @@ namespace xivmodimage
             {
                 // End of the list
                 LogMessage("All mods processed. Scanning complete.");
+                labelModAuthor.Text = "";
+                labelModName.Text = "";
+                labelPageTitle.Text = "";
             }
         }
 

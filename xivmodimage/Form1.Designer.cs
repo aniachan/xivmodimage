@@ -45,6 +45,9 @@
             this.labelModAuthor = new System.Windows.Forms.Label();
             this.btnPackMods = new System.Windows.Forms.Button();
             this.progressBarExportMods = new System.Windows.Forms.ProgressBar();
+            this.descPageTitle = new System.Windows.Forms.Label();
+            this.labelPageTitle = new System.Windows.Forms.Label();
+            this.labelImageProgress = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -69,7 +72,7 @@
             // 
             // textModDir
             // 
-            this.textModDir.Location = new System.Drawing.Point(12, 404);
+            this.textModDir.Location = new System.Drawing.Point(12, 423);
             this.textModDir.Name = "textModDir";
             this.textModDir.Size = new System.Drawing.Size(317, 23);
             this.textModDir.TabIndex = 2;
@@ -77,7 +80,7 @@
             // btnAccept
             // 
             this.btnAccept.Enabled = false;
-            this.btnAccept.Location = new System.Drawing.Point(566, 357);
+            this.btnAccept.Location = new System.Drawing.Point(566, 376);
             this.btnAccept.Name = "btnAccept";
             this.btnAccept.Size = new System.Drawing.Size(117, 32);
             this.btnAccept.TabIndex = 3;
@@ -87,7 +90,7 @@
             // 
             // btnBrowse
             // 
-            this.btnBrowse.Location = new System.Drawing.Point(335, 404);
+            this.btnBrowse.Location = new System.Drawing.Point(334, 423);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(75, 23);
             this.btnBrowse.TabIndex = 4;
@@ -98,7 +101,7 @@
             // btnScan
             // 
             this.btnScan.Enabled = false;
-            this.btnScan.Location = new System.Drawing.Point(416, 357);
+            this.btnScan.Location = new System.Drawing.Point(411, 376);
             this.btnScan.Name = "btnScan";
             this.btnScan.Size = new System.Drawing.Size(143, 70);
             this.btnScan.TabIndex = 5;
@@ -109,7 +112,7 @@
             // btnCustom
             // 
             this.btnCustom.Enabled = false;
-            this.btnCustom.Location = new System.Drawing.Point(566, 395);
+            this.btnCustom.Location = new System.Drawing.Point(566, 414);
             this.btnCustom.Name = "btnCustom";
             this.btnCustom.Size = new System.Drawing.Size(117, 32);
             this.btnCustom.TabIndex = 6;
@@ -128,7 +131,7 @@
             // btnPrevImage
             // 
             this.btnPrevImage.Enabled = false;
-            this.btnPrevImage.Location = new System.Drawing.Point(517, 295);
+            this.btnPrevImage.Location = new System.Drawing.Point(398, 291);
             this.btnPrevImage.Name = "btnPrevImage";
             this.btnPrevImage.Size = new System.Drawing.Size(75, 23);
             this.btnPrevImage.TabIndex = 8;
@@ -139,7 +142,7 @@
             // btnNextImage
             // 
             this.btnNextImage.Enabled = false;
-            this.btnNextImage.Location = new System.Drawing.Point(598, 295);
+            this.btnNextImage.Location = new System.Drawing.Point(479, 291);
             this.btnNextImage.Name = "btnNextImage";
             this.btnNextImage.Size = new System.Drawing.Size(75, 23);
             this.btnNextImage.TabIndex = 9;
@@ -151,14 +154,14 @@
             // 
             this.logBox.Location = new System.Drawing.Point(12, 71);
             this.logBox.Name = "logBox";
-            this.logBox.Size = new System.Drawing.Size(372, 318);
+            this.logBox.Size = new System.Drawing.Size(372, 346);
             this.logBox.TabIndex = 10;
             this.logBox.Text = "";
             // 
             // descModName
             // 
             this.descModName.AutoSize = true;
-            this.descModName.Location = new System.Drawing.Point(409, 331);
+            this.descModName.Location = new System.Drawing.Point(398, 317);
             this.descModName.Name = "descModName";
             this.descModName.Size = new System.Drawing.Size(70, 15);
             this.descModName.TabIndex = 11;
@@ -167,7 +170,7 @@
             // labelModName
             // 
             this.labelModName.AutoSize = true;
-            this.labelModName.Location = new System.Drawing.Point(485, 331);
+            this.labelModName.Location = new System.Drawing.Point(474, 317);
             this.labelModName.Name = "labelModName";
             this.labelModName.Size = new System.Drawing.Size(27, 15);
             this.labelModName.TabIndex = 12;
@@ -176,7 +179,7 @@
             // descModAuthor
             // 
             this.descModAuthor.AutoSize = true;
-            this.descModAuthor.Location = new System.Drawing.Point(566, 331);
+            this.descModAuthor.Location = new System.Drawing.Point(400, 337);
             this.descModAuthor.Name = "descModAuthor";
             this.descModAuthor.Size = new System.Drawing.Size(78, 15);
             this.descModAuthor.TabIndex = 13;
@@ -185,7 +188,7 @@
             // labelModAuthor
             // 
             this.labelModAuthor.AutoSize = true;
-            this.labelModAuthor.Location = new System.Drawing.Point(650, 331);
+            this.labelModAuthor.Location = new System.Drawing.Point(474, 337);
             this.labelModAuthor.Name = "labelModAuthor";
             this.labelModAuthor.Size = new System.Drawing.Size(27, 15);
             this.labelModAuthor.TabIndex = 14;
@@ -194,7 +197,7 @@
             // btnPackMods
             // 
             this.btnPackMods.Enabled = false;
-            this.btnPackMods.Location = new System.Drawing.Point(689, 357);
+            this.btnPackMods.Location = new System.Drawing.Point(689, 376);
             this.btnPackMods.Name = "btnPackMods";
             this.btnPackMods.Size = new System.Drawing.Size(99, 32);
             this.btnPackMods.TabIndex = 15;
@@ -204,17 +207,48 @@
             // 
             // progressBarExportMods
             // 
-            this.progressBarExportMods.Location = new System.Drawing.Point(689, 395);
+            this.progressBarExportMods.Location = new System.Drawing.Point(689, 414);
             this.progressBarExportMods.Name = "progressBarExportMods";
             this.progressBarExportMods.Size = new System.Drawing.Size(99, 32);
             this.progressBarExportMods.TabIndex = 16;
             this.progressBarExportMods.Visible = false;
+            // 
+            // descPageTitle
+            // 
+            this.descPageTitle.AutoSize = true;
+            this.descPageTitle.Location = new System.Drawing.Point(400, 358);
+            this.descPageTitle.Name = "descPageTitle";
+            this.descPageTitle.Size = new System.Drawing.Size(61, 15);
+            this.descPageTitle.TabIndex = 17;
+            this.descPageTitle.Text = "Page Title:";
+            // 
+            // labelPageTitle
+            // 
+            this.labelPageTitle.AutoSize = true;
+            this.labelPageTitle.Location = new System.Drawing.Point(474, 358);
+            this.labelPageTitle.Name = "labelPageTitle";
+            this.labelPageTitle.Size = new System.Drawing.Size(27, 15);
+            this.labelPageTitle.TabIndex = 18;
+            this.labelPageTitle.Text = "null";
+            this.labelPageTitle.UseMnemonic = false;
+            // 
+            // labelImageProgress
+            // 
+            this.labelImageProgress.AutoSize = true;
+            this.labelImageProgress.Location = new System.Drawing.Point(750, 295);
+            this.labelImageProgress.Name = "labelImageProgress";
+            this.labelImageProgress.Size = new System.Drawing.Size(27, 15);
+            this.labelImageProgress.TabIndex = 19;
+            this.labelImageProgress.Text = "null";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.labelImageProgress);
+            this.Controls.Add(this.labelPageTitle);
+            this.Controls.Add(this.descPageTitle);
             this.Controls.Add(this.progressBarExportMods);
             this.Controls.Add(this.btnPackMods);
             this.Controls.Add(this.labelModAuthor);
@@ -261,5 +295,8 @@
         private Label labelModAuthor;
         private Button btnPackMods;
         private ProgressBar progressBarExportMods;
+        private Label descPageTitle;
+        private Label labelPageTitle;
+        private Label labelImageProgress;
     }
 }
