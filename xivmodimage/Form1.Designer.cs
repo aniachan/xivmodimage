@@ -28,252 +28,265 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.descTitle = new System.Windows.Forms.Label();
-            this.descAuthor = new System.Windows.Forms.Label();
-            this.textModDir = new System.Windows.Forms.TextBox();
-            this.btnAccept = new System.Windows.Forms.Button();
-            this.btnBrowse = new System.Windows.Forms.Button();
-            this.btnScan = new System.Windows.Forms.Button();
-            this.btnCustom = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.btnPrevImage = new System.Windows.Forms.Button();
-            this.btnNextImage = new System.Windows.Forms.Button();
-            this.logBox = new System.Windows.Forms.RichTextBox();
-            this.descModName = new System.Windows.Forms.Label();
-            this.labelModName = new System.Windows.Forms.Label();
-            this.descModAuthor = new System.Windows.Forms.Label();
-            this.labelModAuthor = new System.Windows.Forms.Label();
-            this.btnPackMods = new System.Windows.Forms.Button();
-            this.progressBarExportMods = new System.Windows.Forms.ProgressBar();
-            this.descPageTitle = new System.Windows.Forms.Label();
-            this.labelPageTitle = new System.Windows.Forms.Label();
-            this.labelImageProgress = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.SuspendLayout();
+            descTitle = new Label();
+            descAuthor = new Label();
+            textModDir = new TextBox();
+            btnAccept = new Button();
+            btnBrowse = new Button();
+            btnScan = new Button();
+            btnCustom = new Button();
+            pictureBox1 = new PictureBox();
+            btnPrevImage = new Button();
+            btnNextImage = new Button();
+            logBox = new RichTextBox();
+            descModName = new Label();
+            labelModName = new Label();
+            descModAuthor = new Label();
+            labelModAuthor = new Label();
+            btnPackMods = new Button();
+            progressBarExportMods = new ProgressBar();
+            descPageTitle = new Label();
+            labelPageTitle = new Label();
+            labelImageProgress = new Label();
+            btnSkip = new Button();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            SuspendLayout();
             // 
             // descTitle
             // 
-            this.descTitle.AutoSize = true;
-            this.descTitle.Font = new System.Drawing.Font("Segoe UI", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.descTitle.Location = new System.Drawing.Point(0, -1);
-            this.descTitle.Name = "descTitle";
-            this.descTitle.Size = new System.Drawing.Size(270, 50);
-            this.descTitle.TabIndex = 0;
-            this.descTitle.Text = "XIVmodimage";
+            descTitle.AutoSize = true;
+            descTitle.Font = new Font("Segoe UI", 27.75F, FontStyle.Bold, GraphicsUnit.Point);
+            descTitle.Location = new Point(0, -1);
+            descTitle.Name = "descTitle";
+            descTitle.Size = new Size(270, 50);
+            descTitle.TabIndex = 0;
+            descTitle.Text = "XIVmodimage";
             // 
             // descAuthor
             // 
-            this.descAuthor.AutoSize = true;
-            this.descAuthor.Location = new System.Drawing.Point(7, 43);
-            this.descAuthor.Name = "descAuthor";
-            this.descAuthor.Size = new System.Drawing.Size(85, 15);
-            this.descAuthor.TabIndex = 1;
-            this.descAuthor.Text = "by anialothaire";
+            descAuthor.AutoSize = true;
+            descAuthor.Location = new Point(7, 43);
+            descAuthor.Name = "descAuthor";
+            descAuthor.Size = new Size(85, 15);
+            descAuthor.TabIndex = 1;
+            descAuthor.Text = "by anialothaire";
             // 
             // textModDir
             // 
-            this.textModDir.Location = new System.Drawing.Point(12, 423);
-            this.textModDir.Name = "textModDir";
-            this.textModDir.Size = new System.Drawing.Size(317, 23);
-            this.textModDir.TabIndex = 2;
+            textModDir.Location = new Point(12, 423);
+            textModDir.Name = "textModDir";
+            textModDir.Size = new Size(317, 23);
+            textModDir.TabIndex = 2;
             // 
             // btnAccept
             // 
-            this.btnAccept.Enabled = false;
-            this.btnAccept.Location = new System.Drawing.Point(566, 376);
-            this.btnAccept.Name = "btnAccept";
-            this.btnAccept.Size = new System.Drawing.Size(117, 32);
-            this.btnAccept.TabIndex = 3;
-            this.btnAccept.Text = "Accept";
-            this.btnAccept.UseVisualStyleBackColor = true;
-            this.btnAccept.Click += new System.EventHandler(this.btnAccept_Click);
+            btnAccept.Enabled = false;
+            btnAccept.Location = new Point(566, 376);
+            btnAccept.Name = "btnAccept";
+            btnAccept.Size = new Size(117, 32);
+            btnAccept.TabIndex = 3;
+            btnAccept.Text = "Accept";
+            btnAccept.UseVisualStyleBackColor = true;
+            btnAccept.Click += btnAccept_Click;
             // 
             // btnBrowse
             // 
-            this.btnBrowse.Location = new System.Drawing.Point(334, 423);
-            this.btnBrowse.Name = "btnBrowse";
-            this.btnBrowse.Size = new System.Drawing.Size(75, 23);
-            this.btnBrowse.TabIndex = 4;
-            this.btnBrowse.Text = "Browse";
-            this.btnBrowse.UseVisualStyleBackColor = true;
-            this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
+            btnBrowse.Location = new Point(334, 423);
+            btnBrowse.Name = "btnBrowse";
+            btnBrowse.Size = new Size(75, 23);
+            btnBrowse.TabIndex = 4;
+            btnBrowse.Text = "Browse";
+            btnBrowse.UseVisualStyleBackColor = true;
+            btnBrowse.Click += btnBrowse_Click;
             // 
             // btnScan
             // 
-            this.btnScan.Enabled = false;
-            this.btnScan.Location = new System.Drawing.Point(411, 376);
-            this.btnScan.Name = "btnScan";
-            this.btnScan.Size = new System.Drawing.Size(143, 70);
-            this.btnScan.TabIndex = 5;
-            this.btnScan.Text = "Scan";
-            this.btnScan.UseVisualStyleBackColor = true;
-            this.btnScan.Click += new System.EventHandler(this.btnScan_Click);
+            btnScan.Enabled = false;
+            btnScan.Location = new Point(411, 376);
+            btnScan.Name = "btnScan";
+            btnScan.Size = new Size(143, 70);
+            btnScan.TabIndex = 5;
+            btnScan.Text = "Scan";
+            btnScan.UseVisualStyleBackColor = true;
+            btnScan.Click += btnScan_Click;
             // 
             // btnCustom
             // 
-            this.btnCustom.Enabled = false;
-            this.btnCustom.Location = new System.Drawing.Point(566, 414);
-            this.btnCustom.Name = "btnCustom";
-            this.btnCustom.Size = new System.Drawing.Size(117, 32);
-            this.btnCustom.TabIndex = 6;
-            this.btnCustom.Text = "Custom Image";
-            this.btnCustom.UseVisualStyleBackColor = true;
-            this.btnCustom.Click += new System.EventHandler(this.btnCustom_Click);
+            btnCustom.Enabled = false;
+            btnCustom.Location = new Point(566, 414);
+            btnCustom.Name = "btnCustom";
+            btnCustom.Size = new Size(117, 32);
+            btnCustom.TabIndex = 6;
+            btnCustom.Text = "Custom Image";
+            btnCustom.UseVisualStyleBackColor = true;
+            btnCustom.Click += btnCustom_Click;
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(398, 21);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(390, 268);
-            this.pictureBox1.TabIndex = 7;
-            this.pictureBox1.TabStop = false;
+            pictureBox1.Location = new Point(398, 21);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(390, 268);
+            pictureBox1.TabIndex = 7;
+            pictureBox1.TabStop = false;
             // 
             // btnPrevImage
             // 
-            this.btnPrevImage.Enabled = false;
-            this.btnPrevImage.Location = new System.Drawing.Point(398, 291);
-            this.btnPrevImage.Name = "btnPrevImage";
-            this.btnPrevImage.Size = new System.Drawing.Size(75, 23);
-            this.btnPrevImage.TabIndex = 8;
-            this.btnPrevImage.Text = "Prev";
-            this.btnPrevImage.UseVisualStyleBackColor = true;
-            this.btnPrevImage.Click += new System.EventHandler(this.btnPrevImage_Click);
+            btnPrevImage.Enabled = false;
+            btnPrevImage.Location = new Point(398, 291);
+            btnPrevImage.Name = "btnPrevImage";
+            btnPrevImage.Size = new Size(75, 23);
+            btnPrevImage.TabIndex = 8;
+            btnPrevImage.Text = "Prev";
+            btnPrevImage.UseVisualStyleBackColor = true;
+            btnPrevImage.Click += btnPrevImage_Click;
             // 
             // btnNextImage
             // 
-            this.btnNextImage.Enabled = false;
-            this.btnNextImage.Location = new System.Drawing.Point(479, 291);
-            this.btnNextImage.Name = "btnNextImage";
-            this.btnNextImage.Size = new System.Drawing.Size(75, 23);
-            this.btnNextImage.TabIndex = 9;
-            this.btnNextImage.Text = "Next";
-            this.btnNextImage.UseVisualStyleBackColor = true;
-            this.btnNextImage.Click += new System.EventHandler(this.btnNextImage_Click);
+            btnNextImage.Enabled = false;
+            btnNextImage.Location = new Point(479, 291);
+            btnNextImage.Name = "btnNextImage";
+            btnNextImage.Size = new Size(75, 23);
+            btnNextImage.TabIndex = 9;
+            btnNextImage.Text = "Next";
+            btnNextImage.UseVisualStyleBackColor = true;
+            btnNextImage.Click += btnNextImage_Click;
             // 
             // logBox
             // 
-            this.logBox.Location = new System.Drawing.Point(12, 71);
-            this.logBox.Name = "logBox";
-            this.logBox.Size = new System.Drawing.Size(372, 346);
-            this.logBox.TabIndex = 10;
-            this.logBox.Text = "";
+            logBox.Location = new Point(12, 71);
+            logBox.Name = "logBox";
+            logBox.Size = new Size(372, 346);
+            logBox.TabIndex = 10;
+            logBox.Text = "";
             // 
             // descModName
             // 
-            this.descModName.AutoSize = true;
-            this.descModName.Location = new System.Drawing.Point(398, 317);
-            this.descModName.Name = "descModName";
-            this.descModName.Size = new System.Drawing.Size(70, 15);
-            this.descModName.TabIndex = 11;
-            this.descModName.Text = "Mod Name:";
+            descModName.AutoSize = true;
+            descModName.Location = new Point(398, 317);
+            descModName.Name = "descModName";
+            descModName.Size = new Size(70, 15);
+            descModName.TabIndex = 11;
+            descModName.Text = "Mod Name:";
             // 
             // labelModName
             // 
-            this.labelModName.AutoSize = true;
-            this.labelModName.Location = new System.Drawing.Point(474, 317);
-            this.labelModName.Name = "labelModName";
-            this.labelModName.Size = new System.Drawing.Size(27, 15);
-            this.labelModName.TabIndex = 12;
-            this.labelModName.Text = "null";
+            labelModName.AutoSize = true;
+            labelModName.Location = new Point(474, 317);
+            labelModName.Name = "labelModName";
+            labelModName.Size = new Size(27, 15);
+            labelModName.TabIndex = 12;
+            labelModName.Text = "null";
             // 
             // descModAuthor
             // 
-            this.descModAuthor.AutoSize = true;
-            this.descModAuthor.Location = new System.Drawing.Point(400, 337);
-            this.descModAuthor.Name = "descModAuthor";
-            this.descModAuthor.Size = new System.Drawing.Size(78, 15);
-            this.descModAuthor.TabIndex = 13;
-            this.descModAuthor.Text = "Mod Author: ";
+            descModAuthor.AutoSize = true;
+            descModAuthor.Location = new Point(400, 337);
+            descModAuthor.Name = "descModAuthor";
+            descModAuthor.Size = new Size(78, 15);
+            descModAuthor.TabIndex = 13;
+            descModAuthor.Text = "Mod Author: ";
             // 
             // labelModAuthor
             // 
-            this.labelModAuthor.AutoSize = true;
-            this.labelModAuthor.Location = new System.Drawing.Point(474, 337);
-            this.labelModAuthor.Name = "labelModAuthor";
-            this.labelModAuthor.Size = new System.Drawing.Size(27, 15);
-            this.labelModAuthor.TabIndex = 14;
-            this.labelModAuthor.Text = "null";
+            labelModAuthor.AutoSize = true;
+            labelModAuthor.Location = new Point(474, 337);
+            labelModAuthor.Name = "labelModAuthor";
+            labelModAuthor.Size = new Size(27, 15);
+            labelModAuthor.TabIndex = 14;
+            labelModAuthor.Text = "null";
             // 
             // btnPackMods
             // 
-            this.btnPackMods.Enabled = false;
-            this.btnPackMods.Location = new System.Drawing.Point(689, 376);
-            this.btnPackMods.Name = "btnPackMods";
-            this.btnPackMods.Size = new System.Drawing.Size(99, 32);
-            this.btnPackMods.TabIndex = 15;
-            this.btnPackMods.Text = "Pack Mods";
-            this.btnPackMods.UseVisualStyleBackColor = true;
-            this.btnPackMods.Click += new System.EventHandler(this.btnPackMods_Click);
+            btnPackMods.Enabled = false;
+            btnPackMods.Location = new Point(689, 376);
+            btnPackMods.Name = "btnPackMods";
+            btnPackMods.Size = new Size(99, 32);
+            btnPackMods.TabIndex = 15;
+            btnPackMods.Text = "Pack Mods";
+            btnPackMods.UseVisualStyleBackColor = true;
+            btnPackMods.Click += btnPackMods_Click;
             // 
             // progressBarExportMods
             // 
-            this.progressBarExportMods.Location = new System.Drawing.Point(689, 414);
-            this.progressBarExportMods.Name = "progressBarExportMods";
-            this.progressBarExportMods.Size = new System.Drawing.Size(99, 32);
-            this.progressBarExportMods.TabIndex = 16;
-            this.progressBarExportMods.Visible = false;
+            progressBarExportMods.Location = new Point(689, 414);
+            progressBarExportMods.Name = "progressBarExportMods";
+            progressBarExportMods.Size = new Size(99, 32);
+            progressBarExportMods.TabIndex = 16;
+            progressBarExportMods.Visible = false;
             // 
             // descPageTitle
             // 
-            this.descPageTitle.AutoSize = true;
-            this.descPageTitle.Location = new System.Drawing.Point(400, 358);
-            this.descPageTitle.Name = "descPageTitle";
-            this.descPageTitle.Size = new System.Drawing.Size(61, 15);
-            this.descPageTitle.TabIndex = 17;
-            this.descPageTitle.Text = "Page Title:";
+            descPageTitle.AutoSize = true;
+            descPageTitle.Location = new Point(400, 358);
+            descPageTitle.Name = "descPageTitle";
+            descPageTitle.Size = new Size(61, 15);
+            descPageTitle.TabIndex = 17;
+            descPageTitle.Text = "Page Title:";
             // 
             // labelPageTitle
             // 
-            this.labelPageTitle.AutoSize = true;
-            this.labelPageTitle.Location = new System.Drawing.Point(474, 358);
-            this.labelPageTitle.Name = "labelPageTitle";
-            this.labelPageTitle.Size = new System.Drawing.Size(27, 15);
-            this.labelPageTitle.TabIndex = 18;
-            this.labelPageTitle.Text = "null";
-            this.labelPageTitle.UseMnemonic = false;
+            labelPageTitle.AutoSize = true;
+            labelPageTitle.Location = new Point(474, 358);
+            labelPageTitle.Name = "labelPageTitle";
+            labelPageTitle.Size = new Size(27, 15);
+            labelPageTitle.TabIndex = 18;
+            labelPageTitle.Text = "null";
+            labelPageTitle.UseMnemonic = false;
             // 
             // labelImageProgress
             // 
-            this.labelImageProgress.AutoSize = true;
-            this.labelImageProgress.Location = new System.Drawing.Point(750, 295);
-            this.labelImageProgress.Name = "labelImageProgress";
-            this.labelImageProgress.Size = new System.Drawing.Size(27, 15);
-            this.labelImageProgress.TabIndex = 19;
-            this.labelImageProgress.Text = "null";
+            labelImageProgress.AutoSize = true;
+            labelImageProgress.Location = new Point(750, 295);
+            labelImageProgress.Name = "labelImageProgress";
+            labelImageProgress.Size = new Size(27, 15);
+            labelImageProgress.TabIndex = 19;
+            labelImageProgress.Text = "null";
+            // 
+            // btnSkip
+            // 
+            btnSkip.Enabled = false;
+            btnSkip.Location = new Point(689, 414);
+            btnSkip.Name = "btnSkip";
+            btnSkip.Size = new Size(99, 32);
+            btnSkip.TabIndex = 20;
+            btnSkip.Text = "Skip Mod";
+            btnSkip.UseVisualStyleBackColor = true;
+            btnSkip.Visible = false;
+            btnSkip.Click += btnSkip_Click;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.labelImageProgress);
-            this.Controls.Add(this.labelPageTitle);
-            this.Controls.Add(this.descPageTitle);
-            this.Controls.Add(this.progressBarExportMods);
-            this.Controls.Add(this.btnPackMods);
-            this.Controls.Add(this.labelModAuthor);
-            this.Controls.Add(this.descModAuthor);
-            this.Controls.Add(this.labelModName);
-            this.Controls.Add(this.descModName);
-            this.Controls.Add(this.logBox);
-            this.Controls.Add(this.btnNextImage);
-            this.Controls.Add(this.btnPrevImage);
-            this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.btnCustom);
-            this.Controls.Add(this.btnScan);
-            this.Controls.Add(this.btnBrowse);
-            this.Controls.Add(this.btnAccept);
-            this.Controls.Add(this.textModDir);
-            this.Controls.Add(this.descAuthor);
-            this.Controls.Add(this.descTitle);
-            this.MaximumSize = new System.Drawing.Size(816, 489);
-            this.MinimumSize = new System.Drawing.Size(816, 489);
-            this.Name = "Form1";
-            this.Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(800, 450);
+            Controls.Add(btnSkip);
+            Controls.Add(labelImageProgress);
+            Controls.Add(labelPageTitle);
+            Controls.Add(descPageTitle);
+            Controls.Add(progressBarExportMods);
+            Controls.Add(btnPackMods);
+            Controls.Add(labelModAuthor);
+            Controls.Add(descModAuthor);
+            Controls.Add(labelModName);
+            Controls.Add(descModName);
+            Controls.Add(logBox);
+            Controls.Add(btnNextImage);
+            Controls.Add(btnPrevImage);
+            Controls.Add(pictureBox1);
+            Controls.Add(btnCustom);
+            Controls.Add(btnScan);
+            Controls.Add(btnBrowse);
+            Controls.Add(btnAccept);
+            Controls.Add(textModDir);
+            Controls.Add(descAuthor);
+            Controls.Add(descTitle);
+            MaximumSize = new Size(816, 489);
+            MinimumSize = new Size(816, 489);
+            Name = "Form1";
+            Text = "Form1";
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -298,5 +311,6 @@
         private Label descPageTitle;
         private Label labelPageTitle;
         private Label labelImageProgress;
+        private Button btnSkip;
     }
 }

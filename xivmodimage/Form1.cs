@@ -186,6 +186,8 @@ namespace xivmodimage
                     // Enable the Accept button and the custom button
                     btnAccept.Enabled = true;
                     btnCustom.Enabled = true;
+                    btnSkip.Visible = true;
+                    btnSkip.Enabled = true;
                 }
                 else
                 {
@@ -196,6 +198,8 @@ namespace xivmodimage
                     btnCustom.Enabled = true;
                     labelPageTitle.Text = "";
                     labelImageProgress.Text = "";
+                    btnSkip.Visible = true;
+                    btnSkip.Enabled = true;
                 }
             }
             catch (Exception e)
@@ -360,6 +364,9 @@ namespace xivmodimage
                 labelModAuthor.Text = "";
                 labelModName.Text = "";
                 labelPageTitle.Text = "";
+                btnSkip.Visible = true;
+                btnAccept.Visible = false;
+                btnCustom.Visible = false;
             }
         }
 
@@ -467,6 +474,15 @@ namespace xivmodimage
                 LogMessage("Export operation completed successfully.");
             }
             progressBarExportMods.Visible = false;
+        }
+
+        private async void btnSkip_Click(object sender, EventArgs e)
+        {
+            // Log success message
+            LogMessage($"Skipping mod");
+
+            // Trigger the next mod if available
+            await ProcessNextModAsync();
         }
     }
 }
