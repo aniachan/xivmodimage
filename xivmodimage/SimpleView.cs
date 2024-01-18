@@ -8,10 +8,11 @@ using System.Net;
 using System.IO.Compression;
 using System.ComponentModel;
 using System.Linq;
+using System.Diagnostics;
 
 namespace xivmodimage
 {
-    public partial class Form1 : Form
+    public partial class SimpleView : Form
     {
         // Variables
         private string penumbraDirectory;
@@ -21,7 +22,7 @@ namespace xivmodimage
         private int currentImageIndex;
         private BackgroundWorker exportWorker;
 
-        public Form1()
+        public SimpleView()
         {
             // Initialize the BackgroundWorker
             exportWorker = new BackgroundWorker
@@ -149,7 +150,7 @@ namespace xivmodimage
                 var filteredExactNameResults = exactNameResults
                     .Where(image => image.Width >= 100 && image.Height >= 100)
                     .Take(5)
-                    .Select(image => new ImageInfo { ImageUrl = image.Url, PageTitle = image.Title ?? "" })
+                    .Select(image => new ImageInfo { ImageUrl = image.Url, PageTitle = image.Title ?? "", PageUrl = image.SourceUrl ?? "" })
                     .ToList();
 
                 // Step 2: Search for the name of the mod along with the author and "ffxiv mod"
@@ -160,11 +161,12 @@ namespace xivmodimage
                 var filteredAuthorAndModResults = authorAndModResults
                     .Where(image => image.Width >= 100 && image.Height >= 100)
                     .Take(10)
-                    .Select(image => new ImageInfo { ImageUrl = image.Url, PageTitle = image.Title ?? "" })
+                    .Select(image => new ImageInfo { ImageUrl = image.Url, PageTitle = image.Title ?? "", PageUrl = image.SourceUrl ?? "" })
                     .ToList();
 
                 // Combine the results from both searches
-                images = filteredExactNameResults.Concat(filteredAuthorAndModResults).ToList();
+                images = filteredAuthorAndModResults.Concat(filteredExactNameResults).ToList();
+                //images = filteredExactNameResults.Concat(filteredAuthorAndModResults).ToList();
 
 
                 if (images.Count > 0)
@@ -186,8 +188,8 @@ namespace xivmodimage
                     // Enable the Accept button and the custom button
                     btnAccept.Enabled = true;
                     btnCustom.Enabled = true;
-                    btnSkip.Visible = true;
                     btnSkip.Enabled = true;
+                    btnNoImage.Enabled = true;
                 }
                 else
                 {
@@ -198,8 +200,8 @@ namespace xivmodimage
                     btnCustom.Enabled = true;
                     labelPageTitle.Text = "";
                     labelImageProgress.Text = "";
-                    btnSkip.Visible = true;
                     btnSkip.Enabled = true;
+                    btnNoImage.Enabled = true;
                 }
             }
             catch (Exception e)
@@ -225,12 +227,31 @@ namespace xivmodimage
                     // Load the image asynchronously using Task.Run
                     pictureBox1.Image = await Task.Run(() => LoadImageAsync(imageInfo.ImageUrl));
                 }
+                catch (WebException webEx)
+                {
+                    // Handle web-related exceptions (e.g., network issues, 404 not found)
+                    LogMessage($"WebException loading image: {webEx.Message}");
+                    DisplayBlankImage();
+                }
+                catch (ArgumentException argEx)
+                {
+                    // Handle image-related exceptions (e.g., invalid image format)
+                    LogMessage($"ArgumentException loading image: {argEx.Message}");
+                    DisplayBlankImage();
+                }
                 catch (Exception ex)
                 {
-                    // Handle the exception, log the error, or display a placeholder image
+                    // Handle other exceptions
                     LogMessage($"Error loading image: {ex.Message}");
+                    DisplayBlankImage();
                 }
             }
+        }
+
+        private void DisplayBlankImage()
+        {
+            // Set the image to null or clear it to display a blank spot
+            pictureBox1.Image = null;
         }
 
         private async Task<Image> LoadImageAsync(string imageUrl)
@@ -364,9 +385,10 @@ namespace xivmodimage
                 labelModAuthor.Text = "";
                 labelModName.Text = "";
                 labelPageTitle.Text = "";
-                btnSkip.Visible = true;
-                btnAccept.Visible = false;
-                btnCustom.Visible = false;
+                btnSkip.Enabled = false;
+                btnAccept.Enabled = false;
+                btnCustom.Enabled = false;
+                btnNoImage.Enabled = false;
             }
         }
 
@@ -483,6 +505,38 @@ namespace xivmodimage
 
             // Trigger the next mod if available
             await ProcessNextModAsync();
+        }
+
+        private async void btnNoImage_Click(object sender, EventArgs e)
+        {
+            // Log success message
+            LogMessage($"Marking mod as not containing images.");
+
+            // Create the images directory if it doesn't exist
+            string modImagesDirectory = Path.Combine(modInfoList[currentModIndex].ModPath, "images");
+            if (!Directory.Exists(modImagesDirectory))
+            {
+                Directory.CreateDirectory(modImagesDirectory);
+            }
+
+            // Create a blank file called '.noimage'
+            string noImageFilePath = Path.Combine(modImagesDirectory, ".noimage");
+            File.WriteAllText(noImageFilePath, string.Empty);
+
+            // Trigger the next mod if available
+            await ProcessNextModAsync();
+        }
+
+        private void labelPageTitle_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (images != null && currentImageIndex >= 0 && currentImageIndex < images.Count)
+            {
+                string pageUrl = images[currentImageIndex].PageUrl;
+                if (!string.IsNullOrEmpty(pageUrl))
+                {
+                    Process.Start(new ProcessStartInfo(pageUrl) { UseShellExecute = true });
+                }
+            }
         }
     }
 }
