@@ -59,5 +59,27 @@ namespace xivmodimage
                 logMessageCallback($"Error saving custom image: {ex.Message}");
             }
         }
+
+        public void AcceptNoImage(ModInfo currentMod)
+        {
+            try
+            {
+                // Create the images directory if it doesn't exist
+                string modImagesDirectory = Path.Combine(currentMod.ModPath, "images");
+                if (!Directory.Exists(modImagesDirectory))
+                {
+                    Directory.CreateDirectory(modImagesDirectory);
+                }
+
+                // Create a blank file called '.noimage'
+                string noImageFilePath = Path.Combine(modImagesDirectory, ".noimage");
+                File.WriteAllText(noImageFilePath, string.Empty);
+            }
+
+            catch (Exception ex)
+            {
+                logMessageCallback($"Error setting mod to no image: {ex.Message}");
+            }
+        }
     }
 }

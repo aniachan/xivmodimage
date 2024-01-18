@@ -11,7 +11,7 @@ namespace xivmodimage
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new SimpleView());
+            Application.Run(new SimpleViewForm());
         }
     }
 
@@ -31,4 +31,13 @@ namespace xivmodimage
         public string PageUrl { get; set; }
         public string PageTitle { get; set; }
     }
+
+    // Define an enum for different processing actions in advanced view
+    public enum ModProcessingAction
+    {
+        Accept,
+        Skip,
+        NoImage
+    }
+
 }

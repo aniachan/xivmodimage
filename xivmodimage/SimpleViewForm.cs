@@ -1,18 +1,10 @@
-using System;
-using System.IO;
-using System.Windows.Forms;
-using System.Text.Json;
-using GScraper;
-using GScraper.Google;
 using System.Net;
-using System.IO.Compression;
 using System.ComponentModel;
-using System.Linq;
 using System.Diagnostics;
 
 namespace xivmodimage
 {
-    public partial class SimpleView : Form
+    public partial class SimpleViewForm : Form
     {
         // Instances
         private ModScanner modScanner;
@@ -20,6 +12,7 @@ namespace xivmodimage
         private ImageLoader imageLoader;
         private ModAcceptanceHandler modAcceptanceHandler;
         private ModExporter modExporter;
+        private AdvancedViewForm advancedView;
 
         // Variables
         private string penumbraDirectory;
@@ -29,7 +22,7 @@ namespace xivmodimage
         private int currentImageIndex;
         private BackgroundWorker exportWorker;
 
-        public SimpleView()
+        public SimpleViewForm()
         {
             modScanner = new ModScanner(LogMessage);
             imageScanner = new ImageScanner(LogMessage);
@@ -93,6 +86,8 @@ namespace xivmodimage
 
                 // Trigger scanning for images for the first mod
                 ScanImagesForCurrentModAsync(modInfoList[0]);
+
+                btnBulkProcess.Enabled = true;
             }
             else
             {
@@ -241,6 +236,26 @@ namespace xivmodimage
             }
         }
 
+        private async void btnSkip_Click(object sender, EventArgs e)
+        {
+            // Log success message
+            LogMessage($"Skipping mod");
+
+            // Trigger the next mod if available
+            await ProcessNextModAsync();
+        }
+
+        private async void btnNoImage_Click(object sender, EventArgs e)
+        {
+            // Log success message
+            LogMessage($"Marking mod as not containing images.");
+
+            modAcceptanceHandler.AcceptNoImage(modInfoList[currentModIndex]);
+
+            // Trigger the next mod if available
+            await ProcessNextModAsync();
+        }
+
         private async Task ProcessNextModAsync()
         {
             currentImageIndex = 0; // Reset the image index
@@ -265,7 +280,7 @@ namespace xivmodimage
             }
         }
 
-        private void LogMessage(string message)
+        public void LogMessage(string message)
         {
             logBox.AppendText($"{DateTime.Now}: {message}\n");
         }
@@ -333,35 +348,6 @@ namespace xivmodimage
             progressBarExportMods.Visible = false;
         }
 
-        private async void btnSkip_Click(object sender, EventArgs e)
-        {
-            // Log success message
-            LogMessage($"Skipping mod");
-
-            // Trigger the next mod if available
-            await ProcessNextModAsync();
-        }
-
-        private async void btnNoImage_Click(object sender, EventArgs e)
-        {
-            // Log success message
-            LogMessage($"Marking mod as not containing images.");
-
-            // Create the images directory if it doesn't exist
-            string modImagesDirectory = Path.Combine(modInfoList[currentModIndex].ModPath, "images");
-            if (!Directory.Exists(modImagesDirectory))
-            {
-                Directory.CreateDirectory(modImagesDirectory);
-            }
-
-            // Create a blank file called '.noimage'
-            string noImageFilePath = Path.Combine(modImagesDirectory, ".noimage");
-            File.WriteAllText(noImageFilePath, string.Empty);
-
-            // Trigger the next mod if available
-            await ProcessNextModAsync();
-        }
-
         private void labelPageTitle_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             if (images != null && currentImageIndex >= 0 && currentImageIndex < images.Count)
@@ -372,6 +358,17 @@ namespace xivmodimage
                     Process.Start(new ProcessStartInfo(pageUrl) { UseShellExecute = true });
                 }
             }
+        }
+
+        private void ShowAdvancedView()
+        {
+            advancedView = new AdvancedViewForm(this, modInfoList); // Pass SimpleView as a reference to AdvancedViewForm
+            advancedView.ShowDialog(); // Show the advanced view as a modal dialog
+        }
+
+        private void btnBulkProcess_Click(object sender, EventArgs e)
+        {
+            ShowAdvancedView();
         }
     }
 }

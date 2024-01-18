@@ -1,6 +1,6 @@
 ﻿namespace xivmodimage
 {
-    partial class SimpleView
+    partial class SimpleViewForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SimpleView));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SimpleViewForm));
             descTitle = new Label();
             descAuthor = new Label();
             textModDir = new TextBox();
@@ -52,6 +52,7 @@
             pictureBox2 = new PictureBox();
             btnNoImage = new Button();
             labelPageTitle = new LinkLabel();
+            btnBulkProcess = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             SuspendLayout();
@@ -292,12 +293,24 @@
             labelPageTitle.VisitedLinkColor = Color.FromArgb(255, 192, 255);
             labelPageTitle.LinkClicked += labelPageTitle_LinkClicked;
             // 
-            // SimpleView
+            // btnBulkProcess
+            // 
+            btnBulkProcess.Enabled = false;
+            btnBulkProcess.Location = new Point(631, 583);
+            btnBulkProcess.Name = "btnBulkProcess";
+            btnBulkProcess.Size = new Size(117, 32);
+            btnBulkProcess.TabIndex = 24;
+            btnBulkProcess.Text = "Bulk Process";
+            btnBulkProcess.UseVisualStyleBackColor = true;
+            btnBulkProcess.Click += btnBulkProcess_Click;
+            // 
+            // SimpleViewForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(99, 99, 99);
             ClientSize = new Size(984, 661);
+            Controls.Add(btnBulkProcess);
             Controls.Add(labelPageTitle);
             Controls.Add(btnNoImage);
             Controls.Add(pictureBox2);
@@ -324,7 +337,7 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximumSize = new Size(1000, 700);
             MinimumSize = new Size(1000, 700);
-            Name = "SimpleView";
+            Name = "SimpleViewForm";
             Text = "XIVmodimage";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
@@ -357,5 +370,6 @@
         private PictureBox pictureBox2;
         private Button btnNoImage;
         private LinkLabel labelPageTitle;
+        private Button btnBulkProcess;
     }
 }
