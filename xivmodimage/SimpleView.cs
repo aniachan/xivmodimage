@@ -14,6 +14,13 @@ namespace xivmodimage
 {
     public partial class SimpleView : Form
     {
+        // Instances
+        private ModScanner modScanner;
+        private ImageScanner imageScanner;
+        private ImageLoader imageLoader;
+        private ModAcceptanceHandler modAcceptanceHandler;
+        private ModExporter modExporter;
+
         // Variables
         private string penumbraDirectory;
         private List<ModInfo> modInfoList = new List<ModInfo>();
@@ -24,6 +31,12 @@ namespace xivmodimage
 
         public SimpleView()
         {
+            modScanner = new ModScanner(LogMessage);
+            imageScanner = new ImageScanner(LogMessage);
+            imageLoader = new ImageLoader(LogMessage);
+            modAcceptanceHandler = new ModAcceptanceHandler(LogMessage);
+            modExporter = new ModExporter(LogMessage);
+
             // Initialize the BackgroundWorker
             exportWorker = new BackgroundWorker
             {
@@ -70,7 +83,7 @@ namespace xivmodimage
             btnScan.Enabled = false;
 
             // Perform scanning to create modInfoList
-            ScanDirectories(penumbraDirectory);
+            modInfoList = modScanner.ScanDirectories(penumbraDirectory);
 
             if (modInfoList.Count > 0)
             {
@@ -90,84 +103,11 @@ namespace xivmodimage
             }
         }
 
-        private void ScanDirectories(string rootDirectory)
-        {
-            string[] subDirectories = Directory.GetDirectories(rootDirectory);
-
-            foreach (string subDirectory in subDirectories)
-            {
-                string imagesDirectory = Path.Combine(subDirectory, "images");
-
-                if (!Directory.Exists(imagesDirectory))
-                {
-                    ProcessMetaJson(subDirectory);
-                }
-            }
-        }
-
-        private void ProcessMetaJson(string modDirectory)
-        {
-            string metaJsonPath = Path.Combine(modDirectory, "meta.json");
-
-            if (File.Exists(metaJsonPath))
-            {
-                try
-                {
-                    // Read the contents of the meta.json file
-                    string jsonContent = File.ReadAllText(metaJsonPath);
-
-                    // Deserialize the JSON into a ModInfo object
-                    ModInfo modInfo = JsonSerializer.Deserialize<ModInfo>(jsonContent);
-
-                    // Set the ModPath property
-                    modInfo.ModPath = modDirectory;
-
-                    // Add the ModInfo object to the list
-                    modInfoList.Add(modInfo);
-
-                    // Log information (optional)
-                    LogMessage($"Processed {modInfo.Name} in {Path.GetFileName(modDirectory)}");
-                }
-                catch (Exception ex)
-                {
-                    // Handle exceptions (e.g., invalid JSON format)
-                    LogMessage($"Error processing meta.json in {modDirectory}: {ex.Message}");
-                }
-            }
-        }
-
         private async Task ScanImagesForCurrentModAsync(ModInfo currentMod)
         {
             try
             {
-                using var scraper = new GoogleScraper();
-
-                // Step 1: Search for the exact name of the mod in quotes
-                string exactNameSearch = $"\"{currentMod.Name}\"";
-                var exactNameResults = await scraper.GetImagesAsync(exactNameSearch);
-
-                // Add the first 5 results with images larger than 100x100
-                var filteredExactNameResults = exactNameResults
-                    .Where(image => image.Width >= 100 && image.Height >= 100)
-                    .Take(5)
-                    .Select(image => new ImageInfo { ImageUrl = image.Url, PageTitle = image.Title ?? "", PageUrl = image.SourceUrl ?? "" })
-                    .ToList();
-
-                // Step 2: Search for the name of the mod along with the author and "ffxiv mod"
-                string authorAndModSearch = $"{currentMod.Name} {currentMod.Author} ffxiv mod";
-                var authorAndModResults = await scraper.GetImagesAsync(authorAndModSearch);
-
-                // Add the first 10 results with images larger than 100x100
-                var filteredAuthorAndModResults = authorAndModResults
-                    .Where(image => image.Width >= 100 && image.Height >= 100)
-                    .Take(10)
-                    .Select(image => new ImageInfo { ImageUrl = image.Url, PageTitle = image.Title ?? "", PageUrl = image.SourceUrl ?? "" })
-                    .ToList();
-
-                // Combine the results from both searches
-                images = filteredAuthorAndModResults.Concat(filteredExactNameResults).ToList();
-                //images = filteredExactNameResults.Concat(filteredAuthorAndModResults).ToList();
-
+                images = await imageScanner.ScanImagesForModAsync(currentMod);
 
                 if (images.Count > 0)
                 {
@@ -256,23 +196,7 @@ namespace xivmodimage
 
         private async Task<Image> LoadImageAsync(string imageUrl)
         {
-            using (var httpClient = new HttpClient())
-            {
-                var response = await httpClient.GetAsync(imageUrl);
-                if (response.IsSuccessStatusCode)
-                {
-                    using (var stream = await response.Content.ReadAsStreamAsync())
-                    {
-                        return Image.FromStream(stream);
-                    }
-                }
-                else
-                {
-                    // Optionally handle the error or return a placeholder image
-                    LogMessage($"Failed to download image. Status code: {response.StatusCode}");
-                    return null;
-                }
-            }
+            return await imageLoader.LoadImageAsync(imageUrl);
         }
 
         private void btnNextImage_Click(object sender, EventArgs e)
@@ -297,35 +221,8 @@ namespace xivmodimage
         {
             if (images != null && currentImageIndex >= 0 && currentImageIndex < images.Count)
             {
-                string imageUrl = images[currentImageIndex].ImageUrl;
-                string modImagesDirectory = Path.Combine(modInfoList[currentModIndex].ModPath, "images");
-
-                try
-                {
-                    // Ensure the images directory exists
-                    if (!Directory.Exists(modImagesDirectory))
-                    {
-                        Directory.CreateDirectory(modImagesDirectory);
-                    }
-
-                    // Download the image and save it to the images directory
-                    string imagePath = Path.Combine(modImagesDirectory, $"xmi-image_{DateTime.Now:yyyyMMddHHmmss}.jpg");
-                    using (var client = new WebClient())
-                    {
-                        client.DownloadFile(new Uri(imageUrl), imagePath);
-                    }
-
-                    // Log success message
-                    LogMessage($"Image saved successfully: {imagePath}");
-
-                    // Trigger the next mod if available
-                    await ProcessNextModAsync();
-                }
-                catch (Exception ex)
-                {
-                    // Log error message
-                    LogMessage($"Error saving image: {ex.Message}");
-                }
+                modAcceptanceHandler.AcceptModImage(modInfoList[currentModIndex], images[currentImageIndex]);
+                await ProcessNextModAsync();
             }
         }
 
@@ -338,32 +235,8 @@ namespace xivmodimage
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     string selectedImagePath = openFileDialog.FileName;
-                    string modImagesDirectory = Path.Combine(modInfoList[currentModIndex].ModPath, "images");
-
-                    try
-                    {
-                        // Ensure the images directory exists
-                        if (!Directory.Exists(modImagesDirectory))
-                        {
-                            Directory.CreateDirectory(modImagesDirectory);
-                        }
-
-                        // Copy the selected image to the images directory
-                        string imageName = Path.GetFileName(selectedImagePath);
-                        string destinationPath = Path.Combine(modImagesDirectory, imageName);
-                        File.Copy(selectedImagePath, destinationPath, true);
-
-                        // Log success message
-                        LogMessage($"Custom image saved successfully: {destinationPath}");
-
-                        // Trigger the next mod if available
-                        await ProcessNextModAsync();
-                    }
-                    catch (Exception ex)
-                    {
-                        // Log error message
-                        LogMessage($"Error saving custom image: {ex.Message}");
-                    }
+                    modAcceptanceHandler.AcceptCustomImage(modInfoList[currentModIndex], selectedImagePath);
+                    await ProcessNextModAsync();
                 }
             }
         }
@@ -401,7 +274,6 @@ namespace xivmodimage
         {
             using (var folderBrowserDialog = new FolderBrowserDialog())
             {
-                // Ask the user where they want to save the exported mods
                 folderBrowserDialog.Description = "Select a folder to save exported mods";
                 folderBrowserDialog.ShowNewFolderButton = true;
 
@@ -411,11 +283,19 @@ namespace xivmodimage
                     List<string> subDirectories = new List<string>(Directory.GetDirectories(penumbraDirectory));
 
                     progressBarExportMods.Visible = true;
-                    // Start the background worker
                     exportWorker.RunWorkerAsync(argument: new ExportModsArguments(subDirectories, exportPath));
                 }
             }
         }
+
+        private void ExportModsWorker(object sender, DoWorkEventArgs e)
+        {
+            var arguments = (ExportModsArguments)e.Argument;
+            var worker = (BackgroundWorker)sender;
+
+            modExporter.ExportMods(arguments.ModDirectories, arguments.ExportPath, worker);
+        }
+
         private class ExportModsArguments
         {
             public List<string> ModDirectories { get; }
@@ -425,51 +305,6 @@ namespace xivmodimage
             {
                 ModDirectories = modDirectories;
                 ExportPath = exportPath;
-            }
-        }
-        private void ExportModsWorker(object sender, DoWorkEventArgs e)
-        {
-            var arguments = (ExportModsArguments)e.Argument;
-            var worker = (BackgroundWorker)sender;
-
-            for (int i = 0; i < arguments.ModDirectories.Count; i++)
-            {
-                if (worker.CancellationPending)
-                {
-                    e.Cancel = true;
-                    return;
-                }
-
-                string modDirectory = arguments.ModDirectories[i];
-                int progressPercentage = (i + 1) * 100 / arguments.ModDirectories.Count;
-
-                worker.ReportProgress(progressPercentage, $"Exporting mod {i + 1}/{arguments.ModDirectories.Count}");
-
-                if (Directory.Exists(modDirectory))
-                {
-                    string metaJsonPath = Path.Combine(modDirectory, "meta.json");
-
-                    if (File.Exists(metaJsonPath))
-                    {
-                        try
-                        {
-                            string exportFileName = Path.Combine(arguments.ExportPath, $"{Path.GetFileName(modDirectory)}.pmp");
-                            ZipFile.CreateFromDirectory(modDirectory, exportFileName, CompressionLevel.Optimal, false);
-                        }
-                        catch (Exception ex)
-                        {
-                            worker.ReportProgress(progressPercentage, $"Error exporting mod: {ex.Message}");
-                        }
-                    }
-                    else
-                    {
-                        worker.ReportProgress(progressPercentage, $"Error exporting mod: Missing meta.json - {modDirectory}");
-                    }
-                }
-                else
-                {
-                    worker.ReportProgress(progressPercentage, $"Error exporting mod: Directory not found - {modDirectory}");
-                }
             }
         }
 
