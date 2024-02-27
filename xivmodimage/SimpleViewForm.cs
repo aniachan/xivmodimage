@@ -13,10 +13,12 @@ namespace xivmodimage
         private ModAcceptanceHandler modAcceptanceHandler;
         private ModExporter modExporter;
         private AdvancedViewForm advancedView;
+        private ModSorter modSorter;
 
         // Variables
         private string penumbraDirectory;
         private List<ModInfo> modInfoList = new List<ModInfo>();
+        private SortOrder modSortOrder = new SortOrder();
         private int currentModIndex = 0;
         private List<ImageInfo> images = new List<ImageInfo>();
         private int currentImageIndex;
@@ -29,6 +31,7 @@ namespace xivmodimage
             imageLoader = new ImageLoader(LogMessage);
             modAcceptanceHandler = new ModAcceptanceHandler(LogMessage);
             modExporter = new ModExporter(LogMessage);
+            modSorter = new ModSorter(LogMessage);
 
             // Initialize the BackgroundWorker
             exportWorker = new BackgroundWorker
@@ -369,6 +372,59 @@ namespace xivmodimage
         private void btnBulkProcess_Click(object sender, EventArgs e)
         {
             ShowAdvancedView();
+        }
+
+        private async void btnDeleteMod_Click(object sender, EventArgs e)
+        {
+
+            var confirmResult = MessageBox.Show("Are you sure to delete this mod ??",
+                                     "Confirm Delete!!",
+                                     MessageBoxButtons.YesNo);
+            if (confirmResult == DialogResult.Yes)
+            {
+                string modPath = modInfoList[currentModIndex].ModPath;
+
+                try
+                {
+                    if (Directory.Exists(modPath))
+                    {
+                        Directory.Delete(modPath, true); // true indicates recursive deletion
+                        LogMessage("Mod deleted successfully.");
+                        await ProcessNextModAsync();
+                    }
+                    else
+                    {
+                        LogMessage("Mod path doesn't exist.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    LogMessage("An error occurred: " + ex.Message);
+                }
+            }
+        }
+
+        private void btnAutoSort_Click(object sender, EventArgs e)
+        {
+            var confirmResult = MessageBox.Show("Do you want to auto-sort your mods?",
+                                     "Confirm!!",
+                                     MessageBoxButtons.YesNo);
+            if (confirmResult == DialogResult.Yes)
+            {
+                // Obtain a list of all mods, not just the mods without images
+                List<string> subDirectories = new List<string>(Directory.GetDirectories(penumbraDirectory));
+
+                // Obtain sort order for all mods
+                string sortOrderJsonPath = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    @"XIVLauncher\pluginConfigs\Penumbra\sort_order.json");
+                modSortOrder = modScanner.ReadSortOrderJson(sortOrderJsonPath);
+
+                // Sort the mods
+                modSorter.Sort(subDirectories, modSortOrder);
+                modSorter.BackupSortOrderJson(sortOrderJsonPath);
+                modSorter.WriteSortOrderToJson(sortOrderJsonPath, modSortOrder);
+            }
         }
     }
 }

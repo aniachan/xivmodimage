@@ -53,6 +53,8 @@
             btnNoImage = new Button();
             labelPageTitle = new LinkLabel();
             btnBulkProcess = new Button();
+            btnDeleteMod = new Button();
+            btnAutoSort = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             SuspendLayout();
@@ -304,12 +306,35 @@
             btnBulkProcess.UseVisualStyleBackColor = true;
             btnBulkProcess.Click += btnBulkProcess_Click;
             // 
+            // btnDeleteMod
+            // 
+            btnDeleteMod.BackColor = Color.FromArgb(255, 128, 128);
+            btnDeleteMod.Location = new Point(631, 545);
+            btnDeleteMod.Name = "btnDeleteMod";
+            btnDeleteMod.Size = new Size(117, 32);
+            btnDeleteMod.TabIndex = 25;
+            btnDeleteMod.Text = "DELETE!";
+            btnDeleteMod.UseVisualStyleBackColor = false;
+            btnDeleteMod.Click += btnDeleteMod_Click;
+            // 
+            // btnAutoSort
+            // 
+            btnAutoSort.Location = new Point(482, 545);
+            btnAutoSort.Name = "btnAutoSort";
+            btnAutoSort.Size = new Size(143, 32);
+            btnAutoSort.TabIndex = 26;
+            btnAutoSort.Text = "Auto Sort";
+            btnAutoSort.UseVisualStyleBackColor = true;
+            btnAutoSort.Click += btnAutoSort_Click;
+            // 
             // SimpleViewForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(99, 99, 99);
             ClientSize = new Size(984, 661);
+            Controls.Add(btnAutoSort);
+            Controls.Add(btnDeleteMod);
             Controls.Add(btnBulkProcess);
             Controls.Add(labelPageTitle);
             Controls.Add(btnNoImage);
@@ -371,5 +396,7 @@
         private Button btnNoImage;
         private LinkLabel labelPageTitle;
         private Button btnBulkProcess;
+        private Button btnDeleteMod;
+        private Button btnAutoSort;
     }
 }

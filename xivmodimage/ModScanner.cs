@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+﻿using Newtonsoft.Json;
 
 namespace xivmodimage
 {
@@ -38,7 +38,7 @@ namespace xivmodimage
                 try
                 {
                     string jsonContent = File.ReadAllText(metaJsonPath);
-                    ModInfo modInfo = JsonSerializer.Deserialize<ModInfo>(jsonContent);
+                    ModInfo modInfo = JsonConvert.DeserializeObject<ModInfo>(jsonContent);
 
                     modInfo.ModPath = modDirectory;
                     modInfoList.Add(modInfo);
@@ -49,6 +49,21 @@ namespace xivmodimage
                 {
                     logMessageCallback($"Error processing meta.json in {modDirectory}: {ex.Message}");
                 }
+            }
+        }
+
+        public SortOrder ReadSortOrderJson(string filePath)
+        {
+            try
+            {
+                string jsonText = File.ReadAllText(filePath);
+                SortOrder sortOrder = JsonConvert.DeserializeObject<SortOrder>(jsonText);
+                return sortOrder;
+            }
+            catch (Exception ex)
+            {
+                logMessageCallback($"Error reading JSON file: {ex.Message}");
+                return null;
             }
         }
     }

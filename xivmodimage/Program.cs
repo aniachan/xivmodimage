@@ -22,6 +22,7 @@ namespace xivmodimage
         public string Name { get; set; }
         public string? Author { get; set; }
         public string? Description { get; set; }
+        public bool IsSorted { get; set; }
     }
 
     // Define a class to hold image details
@@ -30,6 +31,13 @@ namespace xivmodimage
         public string ImageUrl { get; set; }
         public string PageUrl { get; set; }
         public string PageTitle { get; set; }
+    }
+
+    // Define a class to hold the data from sort_order.json
+    public class SortOrder
+    {
+        public Dictionary<string, string> Data { get; set; }
+        public List<string> EmptyFolders { get; set; }
     }
 
     // Define an enum for different processing actions in advanced view
